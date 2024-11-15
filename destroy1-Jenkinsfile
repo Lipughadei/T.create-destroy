@@ -21,10 +21,10 @@ pipeline {
         }
     }
 
-   # post {
-    #    always {
-     #       // Cleanup or notifications can go here
-      #      echo 'hello'
-       # }
-    # }
+    post {
+        always {
+            // Cleanup or notifications can go here
+            echo 'hello'
+        }
+     }
 }
