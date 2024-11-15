@@ -1,0 +1,30 @@
+pipeline {
+    agent { label 'terraform_agent' } // Specify your Jenkins agent label
+
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('aws-cred') // Replace with your Jenkins credentials ID
+        AWS_SECRET_ACCESS_KEY = credentials('aws-cred') // Replace with your Jenkins credentials ID
+    }
+
+    stages {
+        stage('Terraform Init') {
+            steps {
+                sh 'terraform init'
+            }
+        }
+
+        stage('Terraform Destroy') {
+            steps {
+                sh 'pwd'
+                sh 'terraform destroy -auto-approve'
+            }
+        }
+    }
+
+   # post {
+    #    always {
+     #       // Cleanup or notifications can go here
+      #      echo 'hello'
+       # }
+    # }
+}
