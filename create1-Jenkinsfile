@@ -1,0 +1,41 @@
+pipeline {
+  agent { label 'terraform_agent' }
+
+  environment {
+    AWS_ACCESS_KEY_ID = credentials('aws-cred')
+    AWS_SECRET_ACCESS_KEY = credentials('aws-cred')
+  }
+  stages {
+    stage('stage-1') {
+      steps {
+        script {
+          def terraforminfo = '''provider "aws"{
+                       region = "ap-south-1"
+          }
+          resource "aws_instance" "example" {
+              ami = "ami-03753afda9b8ba740"
+              instance_type = "t2.micro"
+          }
+          '''
+          writeFile file: 'main.tf', text: terraforminfo // it used to copy the text to a file
+                    
+        }
+      }
+    }
+    stage('stage-2') {
+      steps {
+        sh 'terraform init'
+      }
+    }
+    stage('stage-3') {
+      steps {
+        sh 'terraform plan'
+      }
+    }
+    stage('stage-4') {
+      steps {
+      sh 'terraform apply --auto-apply'
+      }
+    }
+  }
+}
